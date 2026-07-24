@@ -1,0 +1,6 @@
+sarvamai
+dotenv
+sounddevice
+soundfile
+openai-agents
+openai
