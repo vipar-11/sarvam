@@ -26,7 +26,7 @@ class CityInfo(BaseModel):
     native_language: str
     local_greeting: str
 
-llm = ChatSarvam(model="sarvam-30b")
+llm = ChatSarvam(model="sarvam-105b")
 llm_with_tools = llm.bind_tools([get_account_balance])
 structured_llm = llm.with_structured_output(CapitalCity)
 structured_llm2 = llm.with_structured_output(CityInfo)
@@ -51,6 +51,7 @@ def test_tool_calling(text: str):
         response = llm_with_tools.invoke(text)
         print(response.tool_calls) 
         print(response.content) 
+        print(response)
     except Exception as e:
         print(f"Error: {e}")
 
