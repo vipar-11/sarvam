@@ -1,0 +1,29 @@
+[
+  {
+    "id": "google",
+    "name": "Google",
+    "schedule": "2026-07-30",
+    "slot": "10:00 AM - 12:00 PM",
+    "eligibility": "CSE & IT branches, CGPA >= 8.0",
+    "cgpa_cutoff": 8.0,
+    "allowed_branches": ["CSE", "IT"]
+  },
+  {
+    "id": "microsoft",
+    "name": "Microsoft",
+    "schedule": "2026-08-02",
+    "slot": "02:00 PM - 04:00 PM",
+    "eligibility": "All branches, CGPA >= 7.5",
+    "cgpa_cutoff": 7.5,
+    "allowed_branches": ["CSE", "IT", "ECE", "EEE", "MECH", "CIVIL"]
+  },
+  {
+    "id": "infosys",
+    "name": "Infosys",
+    "schedule": "2026-08-05",
+    "slot": "09:00 AM - 11:30 AM",
+    "eligibility": "All branches, CGPA >= 6.0",
+    "cgpa_cutoff": 6.0,
+    "allowed_branches": ["CSE", "IT", "ECE", "EEE", "MECH", "CIVIL"]
+  }
+]

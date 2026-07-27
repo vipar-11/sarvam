@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Cell Voice Assistant</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for beautiful icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="glass-bg"></div>
+    <div class="dashboard-wrapper">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <div class="logo-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                <div class="logo-text">
+                    <h1>Campus Placement Cell</h1>
+                    <p>Voice Agent & Coordinator Portal</p>
+                </div>
+            </div>
+            <div class="status-indicator">
+                <span class="dot live"></span>
+                <span>Portal Online</span>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="dashboard-grid">
+            <!-- Left Panel: Companies Schedule -->
+            <section class="panel glass-panel" id="companies-panel">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-building"></i> Company Schedule</h2>
+                    <button class="btn btn-primary btn-sm" id="btn-add-company">
+                        <i class="fa-solid fa-plus"></i> Add Company
+                    </button>
+                </div>
+                <div class="panel-body">
+                    <p class="panel-description">Manage upcoming company recruitments and qualifications.</p>
+                    <div class="scroll-container" id="companies-list">
+                        <!-- Loaded dynamically -->
+                        <div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin"></i> Loading schedule...</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Center Panel: Voice Agent Assistant -->
+            <section class="panel glass-panel main-assistant-panel" id="assistant-panel">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-microphone-lines"></i> Voice Coordinator Assistant</h2>
+                    <button class="btn btn-secondary btn-sm" id="btn-reset-session">
+                        <i class="fa-solid fa-arrows-rotate"></i> Reset
+                    </button>
+                </div>
+                <div class="panel-body assistant-body">
+                    <!-- Top section showing conversation status -->
+                    <div class="assistant-status-bar">
+                        <div class="session-state-badge" id="session-state">State: Idle</div>
+                        <div class="assistant-status-text" id="assistant-status">Offline - Click below to start</div>
+                    </div>
+
+                    <!-- Visualizer Canvas & Pulsing Microphone Container -->
+                    <div class="mic-container">
+                        <canvas id="waveform-visualizer"></canvas>
+                        
+                        <button class="mic-button" id="btn-talk" disabled>
+                            <i class="fa-solid fa-phone"></i>
+                        </button>
+                        
+                        <div class="mic-glow"></div>
+                    </div>
+
+                    <div class="controls-row">
+                        <!-- Mode Selector -->
+                        <div class="toggle-control">
+                            <label class="switch">
+                                <input type="checkbox" id="toggle-vad" checked>
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="toggle-label">Auto-Send on Silence</span>
+                        </div>
+                        <button class="btn btn-accent" id="btn-voice-toggle">Start Voice Assistant</button>
+                    </div>
+
+                    <!-- Chat History View -->
+                    <div class="chat-wrapper">
+                        <h3><i class="fa-regular fa-comment-dots"></i> Conversation Logs</h3>
+                        <div class="chat-logs" id="chat-logs">
+                            <div class="system-message">Type a message below to chat in text mode, or click "Start Voice Assistant" to connect with voice.</div>
+                        </div>
+                        <div class="chat-input-row" style="display: flex; gap: 8px; margin-top: 8px; width: 100%;">
+                            <input type="text" id="chat-text-input" placeholder="Type a message to the coordinator..." style="flex: 1; padding: 10px 14px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; color: white; font-family: inherit; font-size: 13px;">
+                            <button class="btn btn-primary btn-sm" id="btn-send-text" style="padding: 0 16px;">
+                                <i class="fa-solid fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Panel: Student CV Detail -->
+            <section class="panel glass-panel" id="cv-panel">
+                <div class="panel-header">
+                    <h2><i class="fa-solid fa-file-invoice"></i> Student Profile & CV</h2>
+                    <button class="btn btn-secondary btn-sm" id="btn-edit-cv">
+                        <i class="fa-solid fa-user-pen"></i> Edit Profile
+                    </button>
+                </div>
+                <div class="panel-body">
+                    <p class="panel-description">Review database record for student eligibility checks.</p>
+                    <div class="cv-info-list" id="cv-display">
+                        <div class="cv-item">
+                            <div class="cv-label">Full Name</div>
+                            <div class="cv-value" id="cv-name">-</div>
+                        </div>
+                        <div class="cv-item">
+                            <div class="cv-label">Email Address</div>
+                            <div class="cv-value" id="cv-email">-</div>
+                        </div>
+                        <div class="cv-item">
+                            <div class="cv-label">Branch Name</div>
+                            <div class="cv-value" id="cv-branch">-</div>
+                        </div>
+                        <div class="cv-item">
+                            <div class="cv-label">Current CGPA</div>
+                            <div class="cv-value badge-cgpa" id="cv-cgpa">-</div>
+                        </div>
+                        <div class="cv-item">
+                            <div class="cv-label">Technical Skills</div>
+                            <div class="cv-value" id="cv-skills">-</div>
+                        </div>
+                    </div>
+
+                    <!-- CV Edit Form (hidden by default) -->
+                    <form class="cv-edit-form hidden" id="cv-form">
+                        <div class="form-group">
+                            <label for="input-cv-name">Full Name</label>
+                            <input type="text" id="input-cv-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-cv-email">Email Address</label>
+                            <input type="email" id="input-cv-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-cv-branch">Branch (e.g. CSE, IT, ECE)</label>
+                            <input type="text" id="input-cv-branch" placeholder="CSE" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-cv-cgpa">Current CGPA</label>
+                            <input type="number" id="input-cv-cgpa" step="0.01" min="0" max="10" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-cv-skills">Skills (comma separated)</label>
+                            <textarea id="input-cv-skills" rows="3" required></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                            <button type="button" class="btn btn-secondary" id="btn-cancel-cv">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Company Add/Edit Modal -->
+    <div class="modal-overlay hidden" id="company-modal">
+        <div class="modal glass-modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Add IT Company</h3>
+                <button class="modal-close" id="btn-close-modal"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="company-form">
+                <input type="hidden" id="company-id-input">
+                
+                <div class="form-group">
+                    <label for="company-name">Company Name</label>
+                    <input type="text" id="company-name" required placeholder="e.g. Amazon">
+                </div>
+                
+                <div class="form-group">
+                    <label for="company-schedule">Interview Schedule Date</label>
+                    <input type="date" id="company-schedule" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company-slot">Interview Time Slot</label>
+                    <input type="text" id="company-slot" required placeholder="e.g. 10:00 AM - 01:00 PM">
+                </div>
+                
+                <div class="form-group">
+                    <label for="company-cutoff">CGPA Cutoff</label>
+                    <input type="number" id="company-cutoff" step="0.01" min="0" max="10" required placeholder="e.g. 7.5">
+                </div>
+                
+                <div class="form-group">
+                    <label for="company-branches">Allowed Branches (comma separated)</label>
+                    <input type="text" id="company-branches" required placeholder="e.g. CSE, IT, ECE">
+                </div>
+                
+                <div class="form-group">
+                    <label for="company-eligibility">Eligibility Short Text</label>
+                    <input type="text" id="company-eligibility" required placeholder="e.g. CSE/IT/ECE branches, CGPA >= 7.5">
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary" id="btn-save-company">Save</button>
+                    <button type="button" class="btn btn-secondary" id="btn-cancel-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script imports -->
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
