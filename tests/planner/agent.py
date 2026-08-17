@@ -3,6 +3,8 @@ import openai
 import json
 import os
 from dotenv import load_dotenv
+from rich.console import Console
+console = Console(force_terminal=True)
 
 load_dotenv()
 
@@ -21,10 +23,11 @@ class Checklist:
     def get_checklist(self):
         checklist = []
         for item_id, (item, status) in enumerate(zip(self.items, self.status), start=1):
-            checklist_item = f'{item_id}. {item} {f_desc(status)}'
+            line_style = '[green][strike]' if status else '[red]'
+            checklist_item = f'{line_style}{item_id}. {item} {f_desc(status)}'
             checklist.append(checklist_item)
-        checklist_formatted = '\n'.join(checklist)
-        print(checklist_formatted, '\n')
+        checklist_formatted = '\n'.join(checklist) + '\n'
+        console.print(checklist_formatted)
         return checklist_formatted
 
     def add(self, items: list[str]):
@@ -34,7 +37,7 @@ class Checklist:
 
     def mark_complete(self, item_id: int, completion_notes: str="executed"):
         self.status[item_id-1] = True
-        print(completion_notes, '\n')
+        console.print('[blue]' + completion_notes + '\n')
         return self.get_checklist()
     
 checklist = Checklist()
@@ -139,17 +142,10 @@ class Agent:
         return response.choices[0].message.content
 
 if __name__ == '__main__':
-#     system_prompt = """
-# You are given a problem to solve, by using your checklist tools to plan a list of steps, then carrying out each step in turn.
-# Now create a plan, set the checklist, carry out the steps, and reply with the solution.
-# If any quantity isn't provided in the question, then include a step to come up with a reasonable estimate.
-# Provide your solution in Rich console markup without code blocks.
-# Do not ask the user questions or clarification; respond only with the answer after using your tools.
-#     """.strip()
     system_prompt = """
     You are a helpful problem solver.
     Solve the problem you are given. Plan your work using the checklist and execute on your tasks.
-    """
+    """.strip()
     agent = Agent(system_prompt)
 
     instructions = """

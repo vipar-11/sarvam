@@ -7,3 +7,4 @@ openai
 langchain-sarvam
 langchain
 livekit-agents[sarvam,silero]
+rich

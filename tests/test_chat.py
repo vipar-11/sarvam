@@ -29,7 +29,7 @@ class ChatBot:
             text=text,
             model="bulbul:v3",
             target_language_code="ta-IN",
-            speaker="rohan",            
+            speaker="ishita",            
         )
 
         combined_audio = "".join(audio.audios)
@@ -175,16 +175,16 @@ def test_banking_agents_with_tools():
     Use the available tools to answer user queries in a natural conversational tone.
     Your responses will be converted into a voice message.
     """
-    bot = ChatBot(API_KEY, MODEL, system_prompt=system_prompt, tools=tools)
-    while True:
-        user_input = input("\nYou: ")
-        print("Bot:", bot.chat(user_input), "\n")
-
-    # bot = ChatBot(API_KEY, MODEL, speech=True, system_prompt=system_prompt, tools=tools)
+    # bot = ChatBot(API_KEY, MODEL, system_prompt=system_prompt, tools=tools)
     # while True:
-    #     wav_data, _ = record_to_memory()
-    #     text = bot.speech_to_text(wav_data)
-    #     bot.chat(text)
+    #     user_input = input("\nYou: ")
+    #     print("Bot:", bot.chat(user_input), "\n")
+
+    bot = ChatBot(API_KEY, MODEL, speech=True, system_prompt=system_prompt, tools=tools)
+    while True:
+        wav_data, _ = record_to_memory()
+        text = bot.speech_to_text(wav_data)
+        bot.chat(text)
         
 
 
