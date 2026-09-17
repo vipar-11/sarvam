@@ -1,0 +1,10 @@
+sarvamai
+dotenv
+sounddevice
+soundfile
+openai-agents
+openai
+langchain-sarvam
+langchain
+livekit-agents[sarvam,silero]
+rich
