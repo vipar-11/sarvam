@@ -1,3 +1,4 @@
 sarvamai
 python-dotenv
 gradio
+openai
