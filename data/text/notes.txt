@@ -1,0 +1,63 @@
+Course Agenda
+----------------
+1. Introduction
+	1. what is sarvam AI? little bit on company
+	2. demo from the website
+	3. showcase capabilities
+2. Environment Setup - 
+	1. Prerequisites - IDE (Antigravity, Visual Studio Code),  Python  3.x 
+	2. Sign up and get key
+	3. Create new project and  add files
+		1. .env file - Add the key
+		2. requirements.txt - has all dependencies
+			1. sarvamai - the public project (available in website settings)
+		3. venv - localized virtual env (python3 -m venv venv) - venv 1 - command, venv 2 - folder name (can be anything, but preferred to keep) - one time
+	4. Activate the env - source venv/bin/activate (in windows, source keyword is not required) - everytime you want to run
+	5. Install libraries from requirements.txt - pip install -r requirements.txt (-r: pick the packages from the file)
+3. Start Coding
+	Either do it as script files or notebook files
+	Scripts
+	---------
+		1.  Create a folder and  convert  into package - add __init__.py (can be empty)
+		2.  Start creating  .py files for your program	
+		3. Add python-dotenv dependency to load the env files to be available in the program and  reinstall packages 
+	Notebook
+	--------
+		1. Add requirements-dev.txt for local non-project dependencies - jupyter and reinstall the new file
+		2. enter command "jupyter notebook" in shell to open notebook and opens in default browser
+		3. Create New HelloWorld notebook file
+4. HelloWorld Program
+	1. from sarvamai import  saravamAI
+	2. from dotenv import load_dotenv - to load sarvam api key
+	3. Add starter Hello world program from sarvam ai website settings
+5. messages - role & content in input
+	response.choice - for future use, when we want multiple responses for the same question in the same model
+6.  single message, conversation message, limit on conversation context window, system should always be there for context, either on error or regular interval # of messages can be handled to keep context. 
+7. temperature - 0 - predictable, always highest probable word, more the temperature, the words are displayed based on probability - Need to check further, not working properly.
+8. streaming - instead of response, use chunks.messages to get the data and print as it streams, instead of waiting for entire message to display.
+9. Tool_call - 
+	1. provide tool_call input as json - func name and arguments and append in messages. 
+	2. If tool_call deducted, choice.message will contain tool_call list (incase of acct balance and cust id).
+	3. Get the func name and args, write logic to invoke the function and form new messages with the result of func call and call id and append and call AI again. 
+	4. If no more tool_calls are required, AI will display the result as regular message. 
+	5. Add colors to the Assistant text to make it lok like a chat interaction.
+10.  Text to speech
+	1. Add a simple text with some number.
+	2. call API to convert into audio.
+	3. Play audio in notebook or optionally save audio to file.
+	4. If explicitly used US nomenclature, numbers are always expanded in Indian standards.
+	5. Punctuations changes the modulation of voice output.
+11. Language processing:
+	1. Language and script detection
+	2. Translation - Hindi use mayura with classic and modern colloquial to use strict and hinglish translation to differentiate male female.
+	3. Tamil - some relations are not translated properly, male female is insignificant here like English.
+10. grad IO Integration:
+
+	1. add gradIO in the requirements.txt and rerun the installation.
+	2. Import grad IO and run basic interface first and check the text input being outputted to get a feel of the front end. Close the grad IO.
+	3. Update gradIO code snippet to include chat interface and run returning the same message always to get see the chat output. close gradIO.
+	4. Update code to dynamically pass the response message either direct message from AI or tool Call message from AI
+	
+	
+		
+	
