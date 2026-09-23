@@ -47,19 +47,19 @@ The notebooks are designed to be followed sequentially:
 
 | Notebook | Description |
 | :--- | :--- |
-| **[`01_hello_world.ipynb`](file:///Users/vipar/Data/projects/sarvam/01_hello_world.ipynb)** | Introduction to setting up the Sarvam AI client and making your first LLM chat completion API call. |
-| **[`02_streaming_api.ipynb`](file:///Users/vipar/Data/projects/sarvam/02_streaming_api.ipynb)** | Demonstrates how to stream LLM responses chunk-by-chunk for low-latency, real-time output. |
-| **[`03_simple_chatbot.ipynb`](file:///Users/vipar/Data/projects/sarvam/03_simple_chatbot.ipynb)** | Explains conversational memory by maintaining multi-turn chat history across user and assistant messages. |
-| **[`04_chatbot_with_tools.ipynb`](file:///Users/vipar/Data/projects/sarvam/04_chatbot_with_tools.ipynb)** | Demonstrates tool/function calling with an LLM by integrating custom banking functions (`get_balance`, `get_transactions`). |
-| **[`05_chatbot_with_streaming.ipynb`](file:///Users/vipar/Data/projects/sarvam/05_chatbot_with_streaming.ipynb)** | Combines tool/function calling with real-time response streaming for an interactive conversational assistant. |
-| **[`06_openai_interface.ipynb`](file:///Users/vipar/Data/projects/sarvam/06_openai_interface.ipynb)** | Shows how to use the OpenAI SDK interface as a unified abstraction across model providers (Sarvam AI, Groq, OpenAI). |
-| **[`07_nlp_use_cases.ipynb`](file:///Users/vipar/Data/projects/sarvam/07_nlp_use_cases.ipynb)** | Explores practical NLP tasks including sentiment analysis and text summarization using structured LLM prompts. |
-| **[`08_language_processing.ipynb`](file:///Users/vipar/Data/projects/sarvam/08_language_processing.ipynb)** | Covers Indic language processing including language detection, translation, and colloquial phrasing across Indian languages. |
-| **[`09_text_to_speech.ipynb`](file:///Users/vipar/Data/projects/sarvam/09_text_to_speech.ipynb)** | Demonstrates text-to-speech (TTS) synthesis using Sarvam's Bulbul model across Indian languages and saving audio files. |
-| **[`10_speech_to_text.ipynb`](file:///Users/vipar/Data/projects/sarvam/10_speech_to_text.ipynb)** | Demonstrates speech-to-text (STT) audio transcription using Sarvam's Saaras model. |
-| **[`11_document_digitization.ipynb`](file:///Users/vipar/Data/projects/sarvam/11_document_digitization.ipynb)** | Demonstrates asynchronous document and handwritten text digitization/OCR using Sarvam's document intelligence APIs. |
-| **[`12_document_data_extraction.ipynb`](file:///Users/vipar/Data/projects/sarvam/12_document_data_extraction.ipynb)** | Demonstrates structured data extraction from digitized documents using schema-based extraction jobs. |
-| **[`chat_interface.ipynb`](file:///Users/vipar/Data/projects/sarvam/chat_interface.ipynb)** | Builds an interactive Gradio web UI connecting the tool-enabled banking chatbot for live user interaction. |
+| [01_hello_world.ipynb](./01_hello_world.ipynb) | Introduction to setting up the Sarvam AI client and making your first LLM chat completion API call. |
+| [02_streaming_api.ipynb](./02_streaming_api.ipynb) | Demonstrates how to stream LLM responses chunk-by-chunk for low-latency, real-time output. |
+| [03_simple_chatbot.ipynb](./03_simple_chatbot.ipynb) | Explains conversational memory by maintaining multi-turn chat history across user and assistant messages. |
+| [04_chatbot_with_tools.ipynb](./04_chatbot_with_tools.ipynb) | Demonstrates tool/function calling with an LLM by integrating custom banking functions (`get_balance`, `get_transactions`). |
+| [05_chatbot_with_streaming.ipynb](./05_chatbot_with_streaming.ipynb) | Combines tool/function calling with real-time response streaming for an interactive conversational assistant. |
+| [06_openai_interface.ipynb](./06_openai_interface.ipynb) | Shows how to use the OpenAI SDK interface as a unified abstraction across model providers (Sarvam AI, Groq, OpenAI). |
+| [07_nlp_use_cases.ipynb](./07_nlp_use_cases.ipynb) | Explores practical NLP tasks including sentiment analysis and text summarization using structured LLM prompts. |
+| [08_language_processing.ipynb](./08_language_processing.ipynb) | Covers Indic language processing including language detection, translation, and colloquial phrasing across Indian languages. |
+| [09_text_to_speech.ipynb](./09_text_to_speech.ipynb) | Demonstrates text-to-speech (TTS) synthesis using Sarvam's Bulbul model across Indian languages and saving audio files. |
+| [10_speech_to_text.ipynb](./10_speech_to_text.ipynb) | Demonstrates speech-to-text (STT) audio transcription using Sarvam's Saaras model. |
+| [11_document_digitization.ipynb](./11_document_digitization.ipynb) | Demonstrates asynchronous document and handwritten text digitization/OCR using Sarvam's document intelligence APIs. |
+| [12_document_data_extraction.ipynb](./12_document_data_extraction.ipynb) | Demonstrates structured data extraction from digitized documents using schema-based extraction jobs. |
+| [chat_interface.ipynb](./chat_interface.ipynb) | Builds an interactive Gradio web UI connecting the tool-enabled banking chatbot for live user interaction. |
 
 ---
 
