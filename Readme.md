@@ -28,6 +28,7 @@ cd sarvam
 Install all required libraries specified in `requirements.txt`:
 ```bash
 pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 ### 4. Configure Environment Variables
