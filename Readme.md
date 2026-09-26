@@ -28,16 +28,16 @@ cd sarvam
 Install all required libraries specified in `requirements.txt`:
 ```bash
 pip install -r requirements.txt
-pip install -r requirements-dev.txt
 ```
 
 ### 4. Configure Environment Variables
 Create a `.env` file in the root directory (or update the existing `.env`) and add your API credentials:
 ```env
 SARVAM_API_KEY=your_sarvam_api_key_here
-# Optional (for multi-provider comparisons in Notebook 06):
+# Optional (for multi-provider comparisons in Notebooks 07 & 10):
 OPENAI_API_KEY=your_openai_api_key_here
 GROQ_API_KEY=your_groq_api_key_here
+DEEPSEEK_API_KEY=your_deepseek_api_key_here
 ```
 
 ---
@@ -53,14 +53,14 @@ The notebooks are designed to be followed sequentially:
 | [03_simple_chatbot.ipynb](./03_simple_chatbot.ipynb) | Explains conversational memory by maintaining multi-turn chat history across user and assistant messages. |
 | [04_chatbot_with_tools.ipynb](./04_chatbot_with_tools.ipynb) | Demonstrates tool/function calling with an LLM by integrating custom banking functions (`get_balance`, `get_transactions`). |
 | [05_chatbot_with_streaming.ipynb](./05_chatbot_with_streaming.ipynb) | Combines tool/function calling with real-time response streaming for an interactive conversational assistant. |
-| [06_openai_interface.ipynb](./06_openai_interface.ipynb) | Shows how to use the OpenAI SDK interface as a unified abstraction across model providers (Sarvam AI, Groq, OpenAI). |
-| [07_nlp_use_cases.ipynb](./07_nlp_use_cases.ipynb) | Explores practical NLP tasks including sentiment analysis and text summarization using structured LLM prompts. |
-| [08_language_processing.ipynb](./08_language_processing.ipynb) | Covers Indic language processing including language detection, translation, and colloquial phrasing across Indian languages. |
-| [09_text_to_speech.ipynb](./09_text_to_speech.ipynb) | Demonstrates text-to-speech (TTS) synthesis using Sarvam's Bulbul model across Indian languages and saving audio files. |
-| [10_speech_to_text.ipynb](./10_speech_to_text.ipynb) | Demonstrates speech-to-text (STT) audio transcription using Sarvam's Saaras model. |
-| [11_document_digitization.ipynb](./11_document_digitization.ipynb) | Demonstrates asynchronous document and handwritten text digitization/OCR using Sarvam's document intelligence APIs. |
-| [12_document_data_extraction.ipynb](./12_document_data_extraction.ipynb) | Demonstrates structured data extraction from digitized documents using schema-based extraction jobs. |
-| [chat_interface.ipynb](./chat_interface.ipynb) | Builds an interactive Gradio web UI connecting the tool-enabled banking chatbot for live user interaction. |
+| [06_chat_interface.ipynb](./06_chat_interface.ipynb) | Builds an interactive Gradio web UI connecting the tool-enabled banking chatbot for live user interaction. |
+| [07_openai_interface.ipynb](./07_openai_interface.ipynb) | Shows how to use the OpenAI SDK interface as a unified abstraction across model providers (Sarvam AI, Groq, OpenAI). |
+| [08_nlp_use_cases.ipynb](./08_nlp_use_cases.ipynb) | Explores practical NLP tasks including sentiment analysis and text summarization using structured LLM prompts. |
+| [09_language_processing.ipynb](./09_language_processing.ipynb) | Covers Indic language processing including language detection, translation, and colloquial phrasing across Indian languages. |
+| [10_comparing_token_usage.ipynb](./10_comparing_token_usage.ipynb) | Compares token efficiency and usage across different LLM providers (Sarvam AI, Groq, DeepSeek) for Indic language processing. |
+| [11_text_to_speech.ipynb](./11_text_to_speech.ipynb) | Demonstrates text-to-speech (TTS) synthesis using Sarvam's Bulbul model across Indian languages and saving audio files. |
+| [12_speech_to_text.ipynb](./12_speech_to_text.ipynb) | Demonstrates speech-to-text (STT) audio transcription using Sarvam's Saaras model. |
+| [13_document_digitization.ipynb](./13_document_digitization.ipynb) | Demonstrates asynchronous document and handwritten text digitization/OCR using Sarvam's document intelligence APIs. |
 
 ---
 
@@ -89,14 +89,14 @@ python code_challenge/solution/app.py
 ├── 03_simple_chatbot.ipynb           # Multi-turn conversation history
 ├── 04_chatbot_with_tools.ipynb       # Function and tool calling
 ├── 05_chatbot_with_streaming.ipynb   # Tool calling with streaming
-├── 06_openai_interface.ipynb         # Multi-provider OpenAI SDK wrapper
-├── 07_nlp_use_cases.ipynb            # Sentiment analysis & summarization
-├── 08_language_processing.ipynb      # Language detection & Indic translation
-├── 09_text_to_speech.ipynb           # Bulbul TTS synthesis
-├── 10_speech_to_text.ipynb           # Saaras STT transcription
-├── 11_document_digitization.ipynb    # Document OCR & digitization
-├── 12_document_data_extraction.ipynb # Schema-based document extraction
-├── chat_interface.ipynb              # Gradio web chat UI
+├── 06_chat_interface.ipynb          # Gradio web chat UI
+├── 07_openai_interface.ipynb         # Multi-provider OpenAI SDK wrapper
+├── 08_nlp_use_cases.ipynb            # Sentiment analysis & summarization
+├── 09_language_processing.ipynb      # Language detection & Indic translation
+├── 10_comparing_token_usage.ipynb    # Indic token usage comparison across LLMs
+├── 11_text_to_speech.ipynb           # Bulbul TTS synthesis
+├── 12_speech_to_text.ipynb           # Saaras STT transcription
+├── 13_document_digitization.ipynb    # Document OCR & digitization
 ├── code_challenge/
 │   ├── starter/                      # Starter template for hands-on challenge
 │   └── solution/
@@ -104,7 +104,9 @@ python code_challenge/solution/app.py
 │       └── helper.py                 # Banking chatbot agent with tool handlers
 ├── data/
 │   ├── audio/                        # Sample audio clips for STT
-│   ├── pdfs/                         # Sample documents & forms for OCR/Extraction
+│   ├── pdfs/                         # Sample documents & forms for OCR
+│   ├── sarvam_logo_pack/             # Sarvam AI branding assets
+│   ├── script/                       # Sample dialogue scripts
 │   └── text/                         # Sample text files
 ├── requirements.txt                  # Python dependencies
 └── Readme.md                         # Workshop guide & navigation
