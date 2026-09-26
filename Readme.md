@@ -61,6 +61,7 @@ The notebooks are designed to be followed sequentially:
 | [11_text_to_speech.ipynb](./11_text_to_speech.ipynb) | Demonstrates text-to-speech (TTS) synthesis using Sarvam's Bulbul model across Indian languages and saving audio files. |
 | [12_speech_to_text.ipynb](./12_speech_to_text.ipynb) | Demonstrates speech-to-text (STT) audio transcription using Sarvam's Saaras model. |
 | [13_document_digitization.ipynb](./13_document_digitization.ipynb) | Demonstrates asynchronous document and handwritten text digitization/OCR using Sarvam's document intelligence APIs. |
+| [14_document_data_extraction.ipynb](./14_document_data_extraction.ipynb) | Demonstrates structured data extraction from documents using schema-based document intelligence APIs. |
 
 ---
 
@@ -97,6 +98,7 @@ python code_challenge/solution/app.py
 ├── 11_text_to_speech.ipynb           # Bulbul TTS synthesis
 ├── 12_speech_to_text.ipynb           # Saaras STT transcription
 ├── 13_document_digitization.ipynb    # Document OCR & digitization
+├── 14_document_data_extraction.ipynb # Schema-based document data extraction
 ├── code_challenge/
 │   ├── starter/                      # Starter template for hands-on challenge
 │   └── solution/
