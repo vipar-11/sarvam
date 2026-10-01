@@ -2,7 +2,7 @@ import os
 import tempfile
 import gradio as gr
 
-from helper import chat, messages as helper_messages
+from helper import chat, messages as helper_messages, system_prompt
 from sarvamai import SarvamAI
 from sarvamai.play import save
 from dotenv import load_dotenv
@@ -98,7 +98,7 @@ def clear_session():
     """Reset the conversation session and voice agent context."""
     global helper_messages
     helper_messages.clear()
-    helper_messages.append({"role": "system", "content": "You are a Customer Service Rep from ABC Bank."})
+    helper_messages.append({"role": "system", "content": system_prompt})
     return [], None, None
 
 
@@ -401,12 +401,12 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
+    font-size: 20px;
     box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
 }
 
 .bank-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 800;
     letter-spacing: -0.3px;
     color: #ffffff;
@@ -415,7 +415,7 @@ html, body {
 }
 
 .bank-subtitle {
-    font-size: 11.5px;
+    font-size: 13.5px;
     text-transform: uppercase;
     letter-spacing: 1.2px;
     color: var(--accent-gold);
@@ -442,18 +442,18 @@ html, body {
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 13px;
+    font-size: 15px;
     color: white;
 }
 
 .user-meta-name {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     color: #f1f5f9;
 }
 
 .user-meta-sub {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-muted);
 }
 
@@ -461,7 +461,7 @@ html, body {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 12.5px;
+    font-size: 14.5px;
     font-weight: 600;
     color: #10b981;
     background: rgba(16, 185, 129, 0.1);
@@ -476,7 +476,7 @@ html, body {
     align-items: center;
     padding: 4px 10px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -542,7 +542,7 @@ html, body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .card-chip {
@@ -554,7 +554,7 @@ html, body {
 }
 
 .card-type {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     letter-spacing: 0.8px;
     color: #e2e8f0;
@@ -569,7 +569,7 @@ html, body {
 }
 
 .card-balance-label {
-    font-size: 11px;
+    font-size: 13px;
     text-transform: uppercase;
     color: #94a3b8;
     font-weight: 700;
@@ -578,7 +578,7 @@ html, body {
 
 .card-balance-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 21px;
+    font-size: 23px;
     font-weight: 700;
     color: #ffffff;
     letter-spacing: 2px;
@@ -589,7 +589,7 @@ html, body {
 }
 
 .privacy-pill {
-    font-size: 11.5px;
+    font-size: 13.5px;
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: #60a5fa;
     background: rgba(37, 99, 235, 0.2);
@@ -606,14 +606,14 @@ html, body {
 }
 
 .card-holder-label {
-    font-size: 10px;
+    font-size: 12px;
     text-transform: uppercase;
     color: #94a3b8;
     letter-spacing: 0.8px;
 }
 
 .card-holder-val {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     color: #f8fafc;
 }
@@ -628,7 +628,7 @@ html, body {
 }
 
 .tx-header {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     color: #f1f5f9;
     margin-bottom: 6px;
@@ -663,11 +663,11 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 16px;
 }
 
-.tx-title { font-size: 13px; font-weight: 600; color: #f1f5f9; }
-.tx-time { font-size: 11.5px; color: #64748b; }
+.tx-title { font-size: 15px; font-weight: 600; color: #f1f5f9; }
+.tx-time { font-size: 13.5px; color: #64748b; }
 
 /* Prompt Suggestion Chips */
 .prompts-container {
@@ -683,7 +683,7 @@ html, body {
     border-radius: 6px;
     padding: 5px 8px;
     margin-bottom: 5px;
-    font-size: 12.5px;
+    font-size: 14.5px;
     color: #cbd5e1;
     white-space: nowrap;
     overflow: hidden;
@@ -708,7 +708,7 @@ html, body {
 
 .agent-title-box h3 {
     margin: 0;
-    font-size: 17px;
+    font-size: 19px;
     font-weight: 800;
     color: #ffffff;
     display: flex;
@@ -717,7 +717,7 @@ html, body {
 }
 
 .agent-subtitle {
-    font-size: 12px;
+    font-size: 14px;
     color: var(--text-muted);
     margin: 1px 0 0 0;
 }
@@ -763,7 +763,7 @@ html, body {
 .gradio-container .label-wrap {
     color: #f1f5f9 !important;
     font-weight: 700 !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     background: transparent !important;
     margin-bottom: 2px !important;
 }
@@ -877,7 +877,7 @@ html, body {
     background: linear-gradient(135deg, #1e40af, #2563eb) !important;
     color: #ffffff !important;
     font-weight: 700 !important;
-    font-size: 15px !important;
+    font-size: 17px !important;
     border-radius: 20px !important;
     border: 1px solid rgba(255, 255, 255, 0.25) !important;
     padding: 7px 22px !important;
@@ -942,7 +942,7 @@ html, body {
     -webkit-text-fill-color: #ffffff !important;
     border: 1.5px solid #3b82f6 !important;
     border-radius: 8px !important;
-    font-size: 15px !important;
+    font-size: 17px !important;
     font-weight: 600 !important;
     padding: 6px 12px !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
@@ -956,7 +956,7 @@ html, body {
     background-color: #0f172a !important;
     color: #ffffff !important;
     -webkit-text-fill-color: #ffffff !important;
-    font-size: 15px !important;
+    font-size: 17px !important;
     padding: 6px 10px !important;
 }
 
@@ -1091,14 +1091,32 @@ html, body {
     color: #64748b !important;
 }
 
-/* Chatbot Full Width Rows */
+/* Chatbot Full Width Rows - Pure Transparent Structural Rows */
+#chatbot_display .message-row,
+.gradio-chatbot .message-row,
+#chatbot_display .message-wrap,
+.gradio-chatbot .message-wrap,
+#chatbot_display .panel-wrap,
+.gradio-chatbot .panel-wrap,
+#chatbot_display .user-wrap,
+#chatbot_display .bot-wrap,
+#chatbot_display .bubble,
+#chatbot_display .message-content,
+#chatbot_display .prose {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
 #chatbot_display .message-row,
 .gradio-chatbot .message-row {
     width: 100% !important;
     min-width: 100% !important;
     max-width: 100% !important;
     display: flex !important;
-    padding: 4px 0 !important;
+    padding: 3px 0 !important;
     margin: 2px 0 !important;
     box-sizing: border-box !important;
 }
@@ -1123,7 +1141,7 @@ html, body {
     align-items: flex-end !important;
     margin-left: auto !important;
     margin-right: 0 !important;
-    padding: 4px 0 !important;
+    padding: 3px 0 !important;
     box-sizing: border-box !important;
 }
 
@@ -1147,11 +1165,11 @@ html, body {
     align-items: flex-start !important;
     margin-right: auto !important;
     margin-left: 0 !important;
-    padding: 4px 0 !important;
+    padding: 3px 0 !important;
     box-sizing: border-box !important;
 }
 
-/* User Bubble Wrap */
+/* Bubble Wrappers - Zero Margin/Padding Passthrough */
 #chatbot_display .user-wrap,
 #chatbot_display div.user-wrap {
     display: flex !important;
@@ -1162,10 +1180,11 @@ html, body {
     margin-right: 0 !important;
     max-width: 82% !important;
     width: fit-content !important;
+    padding: 0 !important;
+    margin: 0 !important;
     box-sizing: border-box !important;
 }
 
-/* Bot Bubble Wrap */
 #chatbot_display .bot-wrap,
 #chatbot_display div.bot-wrap {
     display: flex !important;
@@ -1176,10 +1195,12 @@ html, body {
     margin-left: 0 !important;
     max-width: 82% !important;
     width: fit-content !important;
+    padding: 0 !important;
+    margin: 0 !important;
     box-sizing: border-box !important;
 }
 
-/* User Message Bubble with Blue Gradient - Right Aligned */
+/* User Message Bubble - Single Unified Display Element */
 .gradio-container .user, 
 [data-testid="user"],
 #chatbot_display .user,
@@ -1190,7 +1211,7 @@ html, body {
     border-radius: 14px 14px 2px 14px !important;
     border: none !important;
     box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25) !important;
-    font-size: 15px !important;
+    font-size: 17px !important;
     font-weight: 500 !important;
     line-height: 1.45 !important;
     padding: 8px 16px !important;
@@ -1211,7 +1232,7 @@ html, body {
     box-sizing: border-box !important;
 }
 
-/* Bot Message Bubble - Left Aligned */
+/* Bot Message Bubble - Single Unified Display Element */
 .gradio-container .bot, 
 [data-testid="bot"],
 #chatbot_display .bot,
@@ -1222,7 +1243,7 @@ html, body {
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 14px 14px 14px 2px !important;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) !important;
-    font-size: 15px !important;
+    font-size: 17px !important;
     font-weight: 500 !important;
     line-height: 1.45 !important;
     padding: 8px 16px !important;
@@ -1242,54 +1263,29 @@ html, body {
     box-sizing: border-box !important;
 }
 
-#chatbot_display .prose {
-    height: auto !important;
-    min-height: unset !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    word-break: normal !important;
-    background: transparent !important;
-    background-color: transparent !important;
-    font-size: 15px !important;
-    line-height: 1.45 !important;
-}
-
+/* Strip ALL inner nested div/p/span borders & backgrounds */
+#chatbot_display .user *,
+#chatbot_display .bot *,
+#chatbot_display .message *,
+#chatbot_display .prose,
 #chatbot_display .prose * {
-    height: auto !important;
-    min-height: unset !important;
     background: transparent !important;
     background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
     color: inherit !important;
+    font-size: 17px !important;
+    height: auto !important;
+    min-height: unset !important;
 }
 
 #chatbot_display .prose p {
     margin: 2px 0 !important;
     padding: 0 !important;
-    display: block !important;
-}
-
-.gradio-container .user p, 
-.gradio-container .user span, 
-.gradio-container .user div,
-.gradio-container .user code,
-.gradio-container .user mark {
-    color: #ffffff !important;
-    background: transparent !important;
-    background-color: transparent !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.gradio-container .bot p, 
-.gradio-container .bot span, 
-.gradio-container .bot div,
-.gradio-container .bot code,
-.gradio-container .bot mark {
-    color: #f8fafc !important;
-    background: transparent !important;
-    background-color: transparent !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    display: inline !important;
 }
 
 /* Hide all copy, delete, edit, retry action icons and toolbars in transcript */
@@ -1355,7 +1351,7 @@ html, body {
     color: #fca5a5 !important;
     border: 1px solid rgba(239, 68, 68, 0.2) !important;
     border-radius: 7px !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     font-weight: 600 !important;
     padding: 3px 8px !important;
     height: 26px !important;
@@ -1426,7 +1422,7 @@ def create_ui():
                                 <div class="card-holder-label">Expires</div>
                                 <div class="card-holder-val">08/29</div>
                             </div>
-                            <div style="font-size: 18px; font-weight: 800; font-style: italic; color: #fbbf24;">VISA</div>
+                            <div style="font-size: 20px; font-weight: 800; font-style: italic; color: #fbbf24;">VISA</div>
                         </div>
                     </div>
                     """
@@ -1438,7 +1434,7 @@ def create_ui():
                     <div class="tx-card">
                         <div class="tx-header">
                             <span>Account Security & Controls</span>
-                            <span style="font-size: 12px; color: #10b981; font-weight: 600;">● Active</span>
+                            <span style="font-size: 14px; color: #10b981; font-weight: 600;">● Active</span>
                         </div>
                         <div class="tx-item">
                             <div class="tx-icon-group">
@@ -1448,7 +1444,7 @@ def create_ui():
                                     <div class="tx-time">Sarvam Saaras STT Verified</div>
                                 </div>
                             </div>
-                            <div style="font-size: 12px; font-weight: 700; color: #10b981;">SECURE</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #10b981;">SECURE</div>
                         </div>
                         <div class="tx-item">
                             <div class="tx-icon-group">
@@ -1458,7 +1454,7 @@ def create_ui():
                                     <div class="tx-time">Contactless & Domestic POS</div>
                                 </div>
                             </div>
-                            <div style="font-size: 12px; font-weight: 700; color: #f8fafc;">₹ 1,00,000</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #f8fafc;">₹ 1,00,000</div>
                         </div>
                         <div class="tx-item">
                             <div class="tx-icon-group">
@@ -1468,7 +1464,7 @@ def create_ui():
                                     <div class="tx-time">Diamond Tier Membership</div>
                                 </div>
                             </div>
-                            <div style="font-size: 12px; font-weight: 700; color: #fbbf24;">12,450 PTS</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #fbbf24;">12,450 PTS</div>
                         </div>
                     </div>
                     """
@@ -1478,7 +1474,7 @@ def create_ui():
                 gr.HTML(
                     """
                     <div class="prompts-container">
-                        <div style="font-size: 12px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;">
+                        <div style="font-size: 14px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;">
                             💡 Suggested Voice Prompts
                         </div>
                         <div class="prompt-chip">🎙️ "What is my account balance?"</div>
@@ -1544,7 +1540,7 @@ def create_ui():
                     clear_btn = gr.Button("🗑️ Reset Voice Session", elem_classes="clear-btn", scale=1)
                     gr.HTML(
                         """
-                        <div style="display: flex; align-items: center; justify-content: flex-end; font-size: 12px; color: #64748b; height: 100%;">
+                        <div style="display: flex; align-items: center; justify-content: flex-end; font-size: 14px; color: #64748b; height: 100%;">
                             🛡️ End-to-End Encrypted Voice Banking Session
                         </div>
                         """
