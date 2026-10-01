@@ -23,29 +23,41 @@ def transcribe_audio_to_text(audio_data: any):
 
 def speech_to_text(audio_filepath: str) -> str:
     """Transcribe user audio to text using Sarvam Saaras STT."""
-    if not audio_filepath or not os.path.exists(audio_filepath):
+    try:
+        if not audio_filepath or not os.path.exists(audio_filepath):
+            return ""
+        return transcribe_audio_to_text(open(audio_filepath, "rb"))
+    except Exception as e:
+        print(f"STT error: {e}")
         return ""
-    return transcribe_audio_to_text(open(audio_filepath, "rb"))
 
 
 def get_chatbot_response(user_text: str, conversation_history: list) -> str:
     """Generate banking assistant response using Sarvam LLM with tool calling."""
-    assistant_text = chat(user_text)
-    return assistant_text
+    try:
+        assistant_text = chat(user_text)
+        return assistant_text
+    except Exception as e:
+        print(f"Chatbot error: {e}")
+        return f"I apologize, but I encountered an issue processing your request: {e}"
 
 
 def text_to_speech(text_response: str, fallback_audio_filepath: str = None) -> str:
     """Synthesize assistant response into natural voice using Sarvam Bulbul TTS."""
-    audio = client.text_to_speech.convert(
-        language_code="en-IN",
-        text=text_response,
-        model="bulbul:v3",
-        speaker="shubh",
-    )
-    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_file:
-        audio_path = tmp_file.name
-    save(audio, audio_path)
-    return audio_path
+    try:
+        audio = client.text_to_speech.convert(
+            language_code="en-IN",
+            text=text_response,
+            model="bulbul:v3",
+            speaker="shubh",
+        )
+        with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp_file:
+            audio_path = tmp_file.name
+        save(audio, audio_path)
+        return audio_path
+    except Exception as e:
+        print(f"TTS error: {e}")
+        return fallback_audio_filepath
 
 
 def process_audio(audio_filepath: str, conversation_history: list):
@@ -59,23 +71,27 @@ def process_audio(audio_filepath: str, conversation_history: list):
     if not audio_filepath:
         return conversation_history, None, None
 
-    # Step 1: STT
-    user_text = speech_to_text(audio_filepath)
-    if not user_text:
+    try:
+        # Step 1: STT
+        user_text = speech_to_text(audio_filepath)
+        if not user_text:
+            return conversation_history, None, None
+
+        # Step 2: Chatbot response
+        assistant_text = get_chatbot_response(user_text, conversation_history)
+
+        # Step 3: TTS
+        assistant_audio = text_to_speech(assistant_text, fallback_audio_filepath=audio_filepath)
+
+        # Step 4: Update conversation history
+        updated_history = list(conversation_history)
+        updated_history.append({"role": "user", "content": user_text})
+        updated_history.append({"role": "assistant", "content": assistant_text})
+
+        return updated_history, assistant_audio, None
+    except Exception as err:
+        print(f"process_audio error: {err}")
         return conversation_history, None, None
-
-    # Step 2: Chatbot response
-    assistant_text = get_chatbot_response(user_text, conversation_history)
-
-    # Step 3: TTS
-    assistant_audio = text_to_speech(assistant_text, fallback_audio_filepath=audio_filepath)
-
-    # Step 4: Update conversation history
-    updated_history = list(conversation_history)
-    updated_history.append({"role": "user", "content": user_text})
-    updated_history.append({"role": "assistant", "content": assistant_text})
-
-    return updated_history, assistant_audio, None
 
 
 def clear_session():
@@ -225,6 +241,27 @@ VAD_JAVASCRIPT = """
             return stream;
         };
     }
+
+    // Auto-scroll chat to bottom smoothly whenever messages update
+    const autoScrollChat = () => {
+        const targets = [
+            document.querySelector("#chatbot_display .bubble-wrap"),
+            document.querySelector("#chatbot_display .wrapper"),
+            document.querySelector("#chatbot_display"),
+            ...document.querySelectorAll("#chatbot_display div")
+        ];
+        targets.forEach(el => {
+            if (el && el.scrollHeight > el.clientHeight) {
+                el.scrollTop = el.scrollHeight + 5000;
+            }
+        });
+    };
+    const chatObserver = new MutationObserver(() => {
+        autoScrollChat();
+        setTimeout(autoScrollChat, 50);
+        setTimeout(autoScrollChat, 150);
+    });
+    chatObserver.observe(document.body, { childList: true, subtree: true });
 }
 """
 
@@ -916,16 +953,40 @@ html, body {
     min-height: 250px !important;
     max-height: calc(100vh - 215px) !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
     margin: 0 !important;
     box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    scroll-behavior: smooth !important;
 }
 
 #chatbot_display .wrapper,
-#chatbot_display .bubble-wrap,
-.gradio-chatbot .wrapper,
-.gradio-chatbot .bubble-wrap {
+.gradio-chatbot .wrapper {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
     height: 100% !important;
+    max-height: 100% !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    scroll-behavior: smooth !important;
+}
+
+#chatbot_display .bubble-wrap,
+.gradio-chatbot .bubble-wrap {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+    padding: 10px 14px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
 }
 
 #chatbot_display .empty,
@@ -939,7 +1000,59 @@ html, body {
     color: #64748b !important;
 }
 
-.gradio-container .user, [data-testid="user"] {
+/* Chatbot Row & Bubble Width Alignment */
+#chatbot_display .message-row {
+    width: 100% !important;
+    display: flex !important;
+    padding: 3px 0 !important;
+    margin: 2px 0 !important;
+    box-sizing: border-box !important;
+}
+
+#chatbot_display .message-row.user-row,
+#chatbot_display .user-row,
+#chatbot_display .message-row:has(.user),
+#chatbot_display .message-row:has([data-testid="user"]) {
+    justify-content: flex-end !important;
+    align-items: flex-end !important;
+}
+
+#chatbot_display .message-row.bot-row,
+#chatbot_display .bot-row,
+#chatbot_display .message-row:has(.bot),
+#chatbot_display .message-row:has([data-testid="bot"]) {
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+}
+
+#chatbot_display .message-wrap {
+    display: flex !important;
+    max-width: 85% !important;
+    width: auto !important;
+    box-sizing: border-box !important;
+}
+
+#chatbot_display .user-wrap,
+#chatbot_display .message-wrap:has(.user),
+#chatbot_display .message-wrap:has([data-testid="user"]) {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    justify-content: flex-end !important;
+    align-self: flex-end !important;
+}
+
+#chatbot_display .bot-wrap,
+#chatbot_display .message-wrap:has(.bot),
+#chatbot_display .message-wrap:has([data-testid="bot"]) {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+    justify-content: flex-start !important;
+    align-self: flex-start !important;
+}
+
+.gradio-container .user, 
+[data-testid="user"],
+#chatbot_display .user {
     background: linear-gradient(135deg, #1d4ed8, #2563eb) !important;
     color: #ffffff !important;
     border-radius: 12px 12px 2px 12px !important;
@@ -948,10 +1061,22 @@ html, body {
     font-size: 15px !important;
     font-weight: 500 !important;
     line-height: 1.45 !important;
-    padding: 8px 12px !important;
+    padding: 6px 14px !important;
+    margin: 0 0 0 auto !important;
+    height: auto !important;
+    min-height: unset !important;
+    width: auto !important;
+    max-width: 100% !important;
+    display: inline-block !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
+    white-space: normal !important;
+    align-self: flex-end !important;
 }
 
-.gradio-container .bot, [data-testid="bot"] {
+.gradio-container .bot, 
+[data-testid="bot"],
+#chatbot_display .bot {
     background: #1e293b !important;
     color: #f8fafc !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
@@ -960,24 +1085,113 @@ html, body {
     font-size: 15px !important;
     font-weight: 500 !important;
     line-height: 1.45 !important;
-    padding: 8px 12px !important;
+    padding: 6px 14px !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: unset !important;
+    width: auto !important;
+    max-width: 100% !important;
+    display: inline-block !important;
+    word-break: normal !important;
+    overflow-wrap: break-word !important;
 }
 
-.gradio-container .bot p, .gradio-container .bot span, .gradio-container .bot div {
+#chatbot_display .prose {
+    height: auto !important;
+    min-height: unset !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    word-break: normal !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    font-size: 15px !important;
+    line-height: 1.45 !important;
+}
+
+#chatbot_display .prose * {
+    height: auto !important;
+    min-height: unset !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    color: inherit !important;
+}
+
+#chatbot_display .prose p {
+    margin: 2px 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+.gradio-container .user p, 
+.gradio-container .user span, 
+.gradio-container .user div,
+.gradio-container .user code,
+.gradio-container .user mark {
+    color: #ffffff !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.gradio-container .bot p, 
+.gradio-container .bot span, 
+.gradio-container .bot div,
+.gradio-container .bot code,
+.gradio-container .bot mark {
     color: #f8fafc !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/* Hide all copy, delete, edit, retry action icons and toolbars in transcript */
+#chatbot_display .message-actions,
+#chatbot_display .message-buttons,
+#chatbot_display .message-row-actions,
+#chatbot_display .action-btn,
+#chatbot_display [aria-label*="copy" i],
+#chatbot_display [aria-label*="delete" i],
+#chatbot_display [aria-label*="retry" i],
+#chatbot_display [aria-label*="edit" i],
+#chatbot_display [title*="copy" i],
+#chatbot_display [title*="delete" i],
+#chatbot_display [data-testid="copy"],
+#chatbot_display [data-testid="delete"],
+#chatbot_display [data-testid="retry"],
+#chatbot_display [data-testid="edit"],
+#chatbot_display button {
+    display: none !important;
 }
 
 /* Chatbot Custom Scrollbar */
+#chatbot_display::-webkit-scrollbar,
+#chatbot_display .wrapper::-webkit-scrollbar,
+#chatbot_display .bubble-wrap::-webkit-scrollbar,
 .gradio-container .chatbot *::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 6px !important;
+    height: 6px !important;
 }
+#chatbot_display::-webkit-scrollbar-track,
+#chatbot_display .wrapper::-webkit-scrollbar-track,
+#chatbot_display .bubble-wrap::-webkit-scrollbar-track,
 .gradio-container .chatbot *::-webkit-scrollbar-track {
-    background: rgba(15, 23, 42, 0.6);
+    background: rgba(15, 23, 42, 0.6) !important;
+    border-radius: 6px !important;
 }
+#chatbot_display::-webkit-scrollbar-thumb,
+#chatbot_display .wrapper::-webkit-scrollbar-thumb,
+#chatbot_display .bubble-wrap::-webkit-scrollbar-thumb,
 .gradio-container .chatbot *::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 3px;
+    background: rgba(148, 163, 184, 0.4) !important;
+    border-radius: 6px !important;
+}
+#chatbot_display::-webkit-scrollbar-thumb:hover,
+#chatbot_display .wrapper::-webkit-scrollbar-thumb:hover,
+#chatbot_display .bubble-wrap::-webkit-scrollbar-thumb:hover,
+.gradio-container .chatbot *::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.7) !important;
 }
 
 /* Reset Action button & Footer */
@@ -1174,10 +1388,9 @@ def create_ui():
                 # Live Conversation Transcript
                 chatbot_display = gr.Chatbot(
                     label="💬 Live Conversation Transcript",
-                    buttons=["copy"],
+                    buttons=[],
                     autoscroll=True,
                     elem_id="chatbot_display",
-                    height=420,
                 )
 
                 # Session Utilities & Privacy Footer

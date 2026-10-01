@@ -66,9 +66,15 @@ tools_map  = {
 def invoke_tool(f_name: str, f_args: dict):
     return tools_map[f_name](**f_args)
 
+system_prompt = """
+You are a Customer Service Rep from ABC Bank helping customers.
+You speak English, Hindi and Tamil.
+Always respond back in the same language that the customer used when posing the latest question.
+Be courteous always.
+""".strip()
 
 messages=[
-    {"role": "system", "content": "You are a Customer Service Rep from ABC Bank."},
+    {"role": "system", "content": system_prompt},
 ]
 
 def chat(user_message: str):    
