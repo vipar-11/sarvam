@@ -127,7 +127,7 @@ VAD_JAVASCRIPT = """
             badge.className = "status-pill " + (badgeClass || "status-idle");
         }
         if (waveBox) {
-            if (badgeClass === "status-speaking") {
+            if (badgeClass === "status-speaking" || badgeClass === "status-listening" || badgeClass === "status-processing") {
                 waveBox.classList.add("wave-active");
             } else {
                 waveBox.classList.remove("wave-active");
@@ -172,7 +172,6 @@ VAD_JAVASCRIPT = """
             audioContext.close().catch(() => {});
             audioContext = null;
         }
-        updateStatus("🟢 Ready • Tap Record to speak", "status-idle");
     }
 
     function startVAD(stream) {
@@ -231,37 +230,106 @@ VAD_JAVASCRIPT = """
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         const originalGetUserMedia = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices);
         navigator.mediaDevices.getUserMedia = async function(constraints) {
-            const stream = await originalGetUserMedia(constraints);
-            if (constraints && (constraints.audio || constraints === true)) {
-                startVAD(stream);
-                stream.getAudioTracks().forEach(track => {
-                    track.addEventListener("ended", () => stopVAD());
-                });
+            updateStatus("👂 Listening... Speak now", "status-listening");
+            try {
+                const stream = await originalGetUserMedia(constraints);
+                if (constraints && (constraints.audio || constraints === true)) {
+                    startVAD(stream);
+                    stream.getAudioTracks().forEach(track => {
+                        track.addEventListener("ended", () => {
+                            updateStatus("⚡ Processing Banking Response...", "status-processing");
+                            stopVAD();
+                        });
+                    });
+                }
+                return stream;
+            } catch (err) {
+                updateStatus("🟢 Ready • Tap Record to speak", "status-idle");
+                throw err;
             }
-            return stream;
         };
     }
 
-    // Auto-scroll chat to bottom smoothly whenever messages update
-    const autoScrollChat = () => {
-        const targets = [
-            document.querySelector("#chatbot_display .bubble-wrap"),
-            document.querySelector("#chatbot_display .wrapper"),
-            document.querySelector("#chatbot_display"),
-            ...document.querySelectorAll("#chatbot_display div")
-        ];
-        targets.forEach(el => {
-            if (el && el.scrollHeight > el.clientHeight) {
-                el.scrollTop = el.scrollHeight + 5000;
+    // Attach click listeners to user_mic buttons for instant feedback on 1st click
+    const setupMicButtonListener = () => {
+        const micBox = document.getElementById("user_mic");
+        if (!micBox) return;
+        micBox.addEventListener("click", (e) => {
+            const btn = e.target.closest("button");
+            if (!btn) return;
+            const text = (btn.innerText || "").toLowerCase();
+            const aria = (btn.getAttribute("aria-label") || "").toLowerCase();
+            if (aria.includes("stop") || text.includes("stop")) {
+                updateStatus("⚡ Processing Banking Response...", "status-processing");
+            } else {
+                updateStatus("👂 Listening... Speak now", "status-listening");
             }
         });
     };
-    const chatObserver = new MutationObserver(() => {
-        autoScrollChat();
-        setTimeout(autoScrollChat, 50);
-        setTimeout(autoScrollChat, 150);
-    });
-    chatObserver.observe(document.body, { childList: true, subtree: true });
+
+    // Attach audio output event listeners for assistant speaking state
+    const setupAudioListeners = () => {
+        document.body.addEventListener("play", (e) => {
+            if (e.target && e.target.tagName === "AUDIO") {
+                updateStatus("🔊 Aria is speaking...", "status-speaking");
+            }
+        }, true);
+
+        document.body.addEventListener("ended", (e) => {
+            if (e.target && e.target.tagName === "AUDIO") {
+                updateStatus("🟢 Ready • Tap Record to speak", "status-idle");
+            }
+        }, true);
+
+        document.body.addEventListener("pause", (e) => {
+            if (e.target && e.target.tagName === "AUDIO") {
+                updateStatus("🟢 Ready • Tap Record to speak", "status-idle");
+            }
+        }, true);
+    };
+
+    // Auto-scroll chat to bottom ONLY when a new message actually arrives
+    let lastMessageCount = 0;
+    const autoScrollChat = () => {
+        const containers = [
+            document.querySelector("#chatbot_display .wrapper"),
+            document.querySelector("#chatbot_display .bubble-wrap"),
+            document.querySelector("#chatbot_display")
+        ];
+        containers.forEach(el => {
+            if (el && el.scrollHeight > el.clientHeight) {
+                el.scrollTo({
+                    top: el.scrollHeight + 1000,
+                    behavior: "smooth"
+                });
+            }
+        });
+    };
+
+    const setupChatObserver = () => {
+        const chatTarget = document.getElementById("chatbot_display");
+        if (!chatTarget) return;
+
+        const countMessages = () => chatTarget.querySelectorAll(".message, .message-row, [data-testid='user'], [data-testid='bot'], [data-testid='assistant']").length;
+        lastMessageCount = countMessages();
+
+        const observer = new MutationObserver(() => {
+            const currentCount = countMessages();
+            if (currentCount > lastMessageCount) {
+                lastMessageCount = currentCount;
+                autoScrollChat();
+                setTimeout(autoScrollChat, 100);
+            }
+        });
+        observer.observe(chatTarget, { childList: true, subtree: true });
+    };
+
+    // Run setup after DOM is ready
+    setTimeout(() => {
+        setupMicButtonListener();
+        setupAudioListeners();
+        setupChatObserver();
+    }, 200);
 }
 """
 
@@ -940,7 +1008,7 @@ html, body {
     font-weight: 700 !important;
 }
 
-/* Chatbot Visibility & Permanent Stationary Sizing */
+/* Chatbot Visibility & Full-Width Container Layout */
 #chatbot_display,
 .gradio-container .chatbot,
 .gradio-chatbot {
@@ -949,6 +1017,8 @@ html, body {
     border-radius: 12px !important;
     box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3) !important;
     flex: 1 1 auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
     height: calc(100vh - 215px) !important;
     min-height: 250px !important;
     max-height: calc(100vh - 215px) !important;
@@ -965,6 +1035,8 @@ html, body {
 .gradio-chatbot .wrapper {
     flex: 1 1 auto !important;
     min-height: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
     height: 100% !important;
     max-height: 100% !important;
     overflow-y: auto !important;
@@ -972,25 +1044,44 @@ html, body {
     display: flex !important;
     flex-direction: column !important;
     scroll-behavior: smooth !important;
+    box-sizing: border-box !important;
 }
 
 #chatbot_display .bubble-wrap,
 .gradio-chatbot .bubble-wrap {
     flex: 1 1 auto !important;
     min-height: 0 !important;
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
     height: auto !important;
     max-height: none !important;
     overflow-y: visible !important;
     overflow-x: hidden !important;
-    padding: 10px 14px !important;
+    padding: 12px 16px !important;
     box-sizing: border-box !important;
     display: flex !important;
     flex-direction: column !important;
-    gap: 8px !important;
+    gap: 10px !important;
+}
+
+#chatbot_display .message-wrap,
+#chatbot_display .panel-wrap,
+.gradio-chatbot .message-wrap,
+.gradio-chatbot .panel-wrap {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
 }
 
 #chatbot_display .empty,
 .gradio-chatbot .empty {
+    width: 100% !important;
     height: 100% !important;
     min-height: 100% !important;
     display: flex !important;
@@ -1000,100 +1091,155 @@ html, body {
     color: #64748b !important;
 }
 
-/* Chatbot Row & Bubble Width Alignment */
-#chatbot_display .message-row {
+/* Chatbot Full Width Rows */
+#chatbot_display .message-row,
+.gradio-chatbot .message-row {
     width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
     display: flex !important;
-    padding: 3px 0 !important;
+    padding: 4px 0 !important;
     margin: 2px 0 !important;
     box-sizing: border-box !important;
 }
 
+/* User Message Row - Full Width Right-Aligned */
 #chatbot_display .message-row.user-row,
 #chatbot_display .user-row,
 #chatbot_display .message-row:has(.user),
-#chatbot_display .message-row:has([data-testid="user"]) {
+#chatbot_display .message-row:has([data-testid="user"]),
+#chatbot_display .message-row:has(.user-wrap),
+#chatbot_display div:has(> .user-wrap),
+#chatbot_display div:has(> .user),
+#chatbot_display div:has(> [data-testid="user"]),
+#chatbot_display .bubble-wrap > div:has(.user),
+#chatbot_display .bubble-wrap > div:has([data-testid="user"]),
+#chatbot_display .bubble-wrap > div:has(.user-wrap) {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
     justify-content: flex-end !important;
     align-items: flex-end !important;
-}
-
-#chatbot_display .message-row.bot-row,
-#chatbot_display .bot-row,
-#chatbot_display .message-row:has(.bot),
-#chatbot_display .message-row:has([data-testid="bot"]) {
-    justify-content: flex-start !important;
-    align-items: flex-start !important;
-}
-
-#chatbot_display .message-wrap {
-    display: flex !important;
-    max-width: 85% !important;
-    width: auto !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    padding: 4px 0 !important;
     box-sizing: border-box !important;
 }
 
-#chatbot_display .user-wrap,
-#chatbot_display .message-wrap:has(.user),
-#chatbot_display .message-wrap:has([data-testid="user"]) {
-    margin-left: auto !important;
-    margin-right: 0 !important;
-    justify-content: flex-end !important;
-    align-self: flex-end !important;
-}
-
-#chatbot_display .bot-wrap,
-#chatbot_display .message-wrap:has(.bot),
-#chatbot_display .message-wrap:has([data-testid="bot"]) {
+/* Bot Message Row - Full Width Left-Aligned */
+#chatbot_display .message-row.bot-row,
+#chatbot_display .bot-row,
+#chatbot_display .message-row:has(.bot),
+#chatbot_display .message-row:has([data-testid="bot"]),
+#chatbot_display .message-row:has(.bot-wrap),
+#chatbot_display div:has(> .bot-wrap),
+#chatbot_display div:has(> .bot),
+#chatbot_display div:has(> [data-testid="bot"]),
+#chatbot_display .bubble-wrap > div:has(.bot),
+#chatbot_display .bubble-wrap > div:has([data-testid="bot"]),
+#chatbot_display .bubble-wrap > div:has(.bot-wrap) {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
     margin-right: auto !important;
     margin-left: 0 !important;
-    justify-content: flex-start !important;
-    align-self: flex-start !important;
+    padding: 4px 0 !important;
+    box-sizing: border-box !important;
 }
 
+/* User Bubble Wrap */
+#chatbot_display .user-wrap,
+#chatbot_display div.user-wrap {
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: flex-end !important;
+    align-self: flex-end !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
+    max-width: 82% !important;
+    width: fit-content !important;
+    box-sizing: border-box !important;
+}
+
+/* Bot Bubble Wrap */
+#chatbot_display .bot-wrap,
+#chatbot_display div.bot-wrap {
+    display: flex !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    align-self: flex-start !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
+    max-width: 82% !important;
+    width: fit-content !important;
+    box-sizing: border-box !important;
+}
+
+/* User Message Bubble with Blue Gradient - Right Aligned */
 .gradio-container .user, 
 [data-testid="user"],
-#chatbot_display .user {
+#chatbot_display .user,
+#chatbot_display .message.user,
+#chatbot_display div[data-testid="user"] {
     background: linear-gradient(135deg, #1d4ed8, #2563eb) !important;
     color: #ffffff !important;
-    border-radius: 12px 12px 2px 12px !important;
+    border-radius: 14px 14px 2px 14px !important;
     border: none !important;
     box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25) !important;
     font-size: 15px !important;
     font-weight: 500 !important;
     line-height: 1.45 !important;
-    padding: 6px 14px !important;
+    padding: 8px 16px !important;
     margin: 0 0 0 auto !important;
+    margin-left: auto !important;
+    margin-right: 0 !important;
     height: auto !important;
     min-height: unset !important;
-    width: auto !important;
-    max-width: 100% !important;
+    width: fit-content !important;
+    max-width: 82% !important;
     display: inline-block !important;
     word-break: normal !important;
     overflow-wrap: break-word !important;
     white-space: normal !important;
     align-self: flex-end !important;
+    float: right !important;
+    text-align: left !important;
+    box-sizing: border-box !important;
 }
 
+/* Bot Message Bubble - Left Aligned */
 .gradio-container .bot, 
 [data-testid="bot"],
-#chatbot_display .bot {
+#chatbot_display .bot,
+#chatbot_display .message.bot,
+#chatbot_display div[data-testid="bot"] {
     background: #1e293b !important;
     color: #f8fafc !important;
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    border-radius: 12px 12px 12px 2px !important;
+    border-radius: 14px 14px 14px 2px !important;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) !important;
     font-size: 15px !important;
     font-weight: 500 !important;
     line-height: 1.45 !important;
-    padding: 6px 14px !important;
-    margin: 0 !important;
+    padding: 8px 16px !important;
+    margin: 0 auto 0 0 !important;
+    margin-right: auto !important;
+    margin-left: 0 !important;
     height: auto !important;
     min-height: unset !important;
-    width: auto !important;
-    max-width: 100% !important;
+    width: fit-content !important;
+    max-width: 82% !important;
     display: inline-block !important;
     word-break: normal !important;
     overflow-wrap: break-word !important;
+    align-self: flex-start !important;
+    float: left !important;
+    text-align: left !important;
+    box-sizing: border-box !important;
 }
 
 #chatbot_display .prose {
