@@ -289,19 +289,19 @@ html, body {
 }
 
 .bank-logo-icon {
-    width: 34px;
-    height: 34px;
+    width: 38px;
+    height: 38px;
     background: linear-gradient(135deg, #2563eb, #7c3aed);
     border-radius: 9px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 16px;
+    font-size: 18px;
     box-shadow: 0 2px 10px rgba(37, 99, 235, 0.4);
 }
 
 .bank-title {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: 800;
     letter-spacing: -0.3px;
     color: #ffffff;
@@ -310,7 +310,7 @@ html, body {
 }
 
 .bank-subtitle {
-    font-size: 9.5px;
+    font-size: 11.5px;
     text-transform: uppercase;
     letter-spacing: 1.2px;
     color: var(--accent-gold);
@@ -329,26 +329,26 @@ html, body {
 }
 
 .user-avatar {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: linear-gradient(135deg, #10b981, #059669);
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 11px;
+    font-size: 13px;
     color: white;
 }
 
 .user-meta-name {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 600;
     color: #f1f5f9;
 }
 
 .user-meta-sub {
-    font-size: 10px;
+    font-size: 12px;
     color: var(--text-muted);
 }
 
@@ -356,7 +356,7 @@ html, body {
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 10.5px;
+    font-size: 12.5px;
     font-weight: 600;
     color: #10b981;
     background: rgba(16, 185, 129, 0.1);
@@ -371,7 +371,7 @@ html, body {
     align-items: center;
     padding: 4px 10px;
     border-radius: 20px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 600;
     transition: all 0.3s ease;
     white-space: nowrap;
@@ -449,7 +449,7 @@ html, body {
 }
 
 .card-type {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.8px;
     color: #e2e8f0;
@@ -464,7 +464,7 @@ html, body {
 }
 
 .card-balance-label {
-    font-size: 9px;
+    font-size: 11px;
     text-transform: uppercase;
     color: #94a3b8;
     font-weight: 700;
@@ -473,7 +473,7 @@ html, body {
 
 .card-balance-val {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 19px;
+    font-size: 21px;
     font-weight: 700;
     color: #ffffff;
     letter-spacing: 2px;
@@ -484,7 +484,7 @@ html, body {
 }
 
 .privacy-pill {
-    font-size: 9.5px;
+    font-size: 11.5px;
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: #60a5fa;
     background: rgba(37, 99, 235, 0.2);
@@ -501,14 +501,14 @@ html, body {
 }
 
 .card-holder-label {
-    font-size: 8px;
+    font-size: 10px;
     text-transform: uppercase;
     color: #94a3b8;
     letter-spacing: 0.8px;
 }
 
 .card-holder-val {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     color: #f8fafc;
 }
@@ -523,7 +523,7 @@ html, body {
 }
 
 .tx-header {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     color: #f1f5f9;
     margin-bottom: 6px;
@@ -558,11 +558,11 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 14px;
 }
 
-.tx-title { font-size: 11px; font-weight: 600; color: #f1f5f9; }
-.tx-time { font-size: 9.5px; color: #64748b; }
+.tx-title { font-size: 13px; font-weight: 600; color: #f1f5f9; }
+.tx-time { font-size: 11.5px; color: #64748b; }
 
 /* Prompt Suggestion Chips */
 .prompts-container {
@@ -578,7 +578,7 @@ html, body {
     border-radius: 6px;
     padding: 5px 8px;
     margin-bottom: 5px;
-    font-size: 10.5px;
+    font-size: 12.5px;
     color: #cbd5e1;
     white-space: nowrap;
     overflow: hidden;
@@ -603,7 +603,7 @@ html, body {
 
 .agent-title-box h3 {
     margin: 0;
-    font-size: 15px;
+    font-size: 17px;
     font-weight: 800;
     color: #ffffff;
     display: flex;
@@ -612,7 +612,7 @@ html, body {
 }
 
 .agent-subtitle {
-    font-size: 10px;
+    font-size: 12px;
     color: var(--text-muted);
     margin: 1px 0 0 0;
 }
@@ -658,7 +658,7 @@ html, body {
 .gradio-container .label-wrap {
     color: #f1f5f9 !important;
     font-weight: 700 !important;
-    font-size: 11px !important;
+    font-size: 13px !important;
     background: transparent !important;
     margin-bottom: 2px !important;
 }
@@ -763,15 +763,16 @@ html, body {
     margin: 0 !important;
 }
 
-/* Single Clean Primary Record Button */
+/* Primary Record Button with Prominent Glowing Red Circle */
 #user_mic .record-button,
 #user_mic button.primary,
+#user_mic button[aria-label*="record" i],
 #user_mic .wrapper > button:first-of-type,
 #user_mic button:first-of-type {
     background: linear-gradient(135deg, #1e40af, #2563eb) !important;
     color: #ffffff !important;
     font-weight: 700 !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     border-radius: 20px !important;
     border: 1px solid rgba(255, 255, 255, 0.25) !important;
     padding: 7px 22px !important;
@@ -780,7 +781,7 @@ html, body {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    gap: 8px !important;
+    gap: 6px !important;
     margin: 0 auto !important;
     transition: all 0.2s ease !important;
 }
@@ -789,6 +790,69 @@ html, body {
 #user_mic button.primary:hover {
     transform: scale(1.02) !important;
     box-shadow: 0 4px 16px rgba(37, 99, 235, 0.6) !important;
+}
+
+/* Prominent Glowing Ruby-Red Circle in Record Button */
+#user_mic .record-button::before,
+#user_mic button.primary::before,
+#user_mic button[aria-label*="record" i]::before,
+#user_mic .wrapper > button:first-of-type::before,
+#user_mic button:first-of-type::before {
+    content: '' !important;
+    display: inline-block !important;
+    width: 12px !important;
+    height: 12px !important;
+    min-width: 12px !important;
+    min-height: 12px !important;
+    background-color: #ff3b30 !important;
+    border: 2px solid #ffffff !important;
+    border-radius: 50% !important;
+    box-shadow: 0 0 10px rgba(255, 59, 48, 1), 0 0 4px rgba(255, 59, 48, 0.8) !important;
+    margin-right: 6px !important;
+    flex-shrink: 0 !important;
+    animation: recordRedDotPulse 1.6s infinite ease-in-out !important;
+}
+
+@keyframes recordRedDotPulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 8px rgba(255, 59, 48, 0.9); }
+    50% { transform: scale(1.22); box-shadow: 0 0 14px rgba(255, 59, 48, 1); }
+}
+
+/* Microphone Device Selection Dropdown - Distinct Visible Background & Bright Text */
+#user_mic select,
+#user_mic select:focus,
+#user_mic select:active,
+#user_mic select option,
+#user_mic select optgroup,
+#user_mic option,
+#user_mic .dropdown,
+#user_mic .dropdown-content,
+#user_mic .select-wrap,
+#user_mic .source-selection,
+#user_mic [data-testid="source-select"],
+.gradio-container select,
+.gradio-container select option {
+    background-color: #1e293b !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: 1.5px solid #3b82f6 !important;
+    border-radius: 8px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    padding: 6px 12px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    cursor: pointer !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+#user_mic select option,
+.gradio-container select option {
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    font-size: 15px !important;
+    padding: 6px 10px !important;
 }
 
 /* Hide all redundant extra stop buttons, toolbar buttons, and hidden controls */
@@ -881,9 +945,9 @@ html, body {
     border-radius: 12px 12px 2px 12px !important;
     border: none !important;
     box-shadow: 0 3px 10px rgba(37, 99, 235, 0.25) !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     font-weight: 500 !important;
-    line-height: 1.4 !important;
+    line-height: 1.45 !important;
     padding: 8px 12px !important;
 }
 
@@ -893,9 +957,9 @@ html, body {
     border: 1px solid rgba(255, 255, 255, 0.1) !important;
     border-radius: 12px 12px 12px 2px !important;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2) !important;
-    font-size: 13px !important;
+    font-size: 15px !important;
     font-weight: 500 !important;
-    line-height: 1.4 !important;
+    line-height: 1.45 !important;
     padding: 8px 12px !important;
 }
 
@@ -931,7 +995,7 @@ html, body {
     color: #fca5a5 !important;
     border: 1px solid rgba(239, 68, 68, 0.2) !important;
     border-radius: 7px !important;
-    font-size: 11px !important;
+    font-size: 13px !important;
     font-weight: 600 !important;
     padding: 3px 8px !important;
     height: 26px !important;
@@ -1002,7 +1066,7 @@ def create_ui():
                                 <div class="card-holder-label">Expires</div>
                                 <div class="card-holder-val">08/29</div>
                             </div>
-                            <div style="font-size: 16px; font-weight: 800; font-style: italic; color: #fbbf24;">VISA</div>
+                            <div style="font-size: 18px; font-weight: 800; font-style: italic; color: #fbbf24;">VISA</div>
                         </div>
                     </div>
                     """
@@ -1014,7 +1078,7 @@ def create_ui():
                     <div class="tx-card">
                         <div class="tx-header">
                             <span>Account Security & Controls</span>
-                            <span style="font-size: 10px; color: #10b981; font-weight: 600;">● Active</span>
+                            <span style="font-size: 12px; color: #10b981; font-weight: 600;">● Active</span>
                         </div>
                         <div class="tx-item">
                             <div class="tx-icon-group">
@@ -1024,7 +1088,7 @@ def create_ui():
                                     <div class="tx-time">Sarvam Saaras STT Verified</div>
                                 </div>
                             </div>
-                            <div style="font-size: 10px; font-weight: 700; color: #10b981;">SECURE</div>
+                            <div style="font-size: 12px; font-weight: 700; color: #10b981;">SECURE</div>
                         </div>
                         <div class="tx-item">
                             <div class="tx-icon-group">
@@ -1034,7 +1098,7 @@ def create_ui():
                                     <div class="tx-time">Contactless & Domestic POS</div>
                                 </div>
                             </div>
-                            <div style="font-size: 10px; font-weight: 700; color: #f8fafc;">₹ 1,00,000</div>
+                            <div style="font-size: 12px; font-weight: 700; color: #f8fafc;">₹ 1,00,000</div>
                         </div>
                         <div class="tx-item">
                             <div class="tx-icon-group">
@@ -1044,7 +1108,7 @@ def create_ui():
                                     <div class="tx-time">Diamond Tier Membership</div>
                                 </div>
                             </div>
-                            <div style="font-size: 10px; font-weight: 700; color: #fbbf24;">12,450 PTS</div>
+                            <div style="font-size: 12px; font-weight: 700; color: #fbbf24;">12,450 PTS</div>
                         </div>
                     </div>
                     """
@@ -1054,7 +1118,7 @@ def create_ui():
                 gr.HTML(
                     """
                     <div class="prompts-container">
-                        <div style="font-size: 10px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;">
+                        <div style="font-size: 12px; font-weight: 700; color: #94a3b8; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px;">
                             💡 Suggested Voice Prompts
                         </div>
                         <div class="prompt-chip">🎙️ "What is my account balance?"</div>
@@ -1121,7 +1185,7 @@ def create_ui():
                     clear_btn = gr.Button("🗑️ Reset Voice Session", elem_classes="clear-btn", scale=1)
                     gr.HTML(
                         """
-                        <div style="display: flex; align-items: center; justify-content: flex-end; font-size: 10px; color: #64748b; height: 100%;">
+                        <div style="display: flex; align-items: center; justify-content: flex-end; font-size: 12px; color: #64748b; height: 100%;">
                             🛡️ End-to-End Encrypted Voice Banking Session
                         </div>
                         """
