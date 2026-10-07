@@ -4,3 +4,4 @@ gradio
 openai
 scipy
 jupyter
+langchain-sarvam
