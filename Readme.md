@@ -34,7 +34,7 @@ pip install -r requirements.txt
 Create a `.env` file in the root directory (or update the existing `.env`) and add your API credentials:
 ```env
 SARVAM_API_KEY=your_sarvam_api_key_here
-# Optional (for multi-provider comparisons in Notebooks 07 & 10):
+# Optional (for multi-provider comparisons in Notebooks 07, 10, & 15):
 OPENAI_API_KEY=your_openai_api_key_here
 GROQ_API_KEY=your_groq_api_key_here
 DEEPSEEK_API_KEY=your_deepseek_api_key_here
@@ -51,9 +51,9 @@ The notebooks are designed to be followed sequentially:
 | [01_hello_world.ipynb](./01_hello_world.ipynb) | Introduction to setting up the Sarvam AI client and making your first LLM chat completion API call. |
 | [02_streaming_api.ipynb](./02_streaming_api.ipynb) | Demonstrates how to stream LLM responses chunk-by-chunk for low-latency, real-time output. |
 | [03_simple_chatbot.ipynb](./03_simple_chatbot.ipynb) | Explains conversational memory by maintaining multi-turn chat history across user and assistant messages. |
-| [04_chatbot_with_tools.ipynb](./04_chatbot_with_tools.ipynb) | Demonstrates tool/function calling with an LLM by integrating custom banking functions (`get_balance`, `get_transactions`). |
-| [05_chatbot_with_streaming.ipynb](./05_chatbot_with_streaming.ipynb) | Combines tool/function calling with real-time response streaming for an interactive conversational assistant. |
-| [06_chat_interface.ipynb](./06_chat_interface.ipynb) | Builds an interactive Gradio web UI connecting the tool-enabled banking chatbot for live user interaction. |
+| [04_simple_chatbot_with_tools.ipynb](./04_simple_chatbot_with_tools.ipynb) | Demonstrates tool/function calling with an LLM by integrating custom banking functions (`get_balance`, `get_transactions`). |
+| [05_chatbot_with_gradio.ipynb](./05_chatbot_with_gradio.ipynb) | Builds an interactive Gradio web UI connecting the tool-enabled banking chatbot for live user interaction. |
+| [06_chatbot_with_streaming.ipynb](./06_chatbot_with_streaming.ipynb) | Combines tool/function calling with real-time response streaming for an interactive conversational assistant. |
 | [07_openai_interface.ipynb](./07_openai_interface.ipynb) | Shows how to use the OpenAI SDK interface as a unified abstraction across model providers (Sarvam AI, Groq, OpenAI). |
 | [08_nlp_use_cases.ipynb](./08_nlp_use_cases.ipynb) | Explores practical NLP tasks including sentiment analysis and text summarization using structured LLM prompts. |
 | [09_language_processing.ipynb](./09_language_processing.ipynb) | Covers Indic language processing including language detection, translation, and colloquial phrasing across Indian languages. |
@@ -62,6 +62,9 @@ The notebooks are designed to be followed sequentially:
 | [12_speech_to_text.ipynb](./12_speech_to_text.ipynb) | Demonstrates speech-to-text (STT) audio transcription using Sarvam's Saaras model. |
 | [13_document_digitization.ipynb](./13_document_digitization.ipynb) | Demonstrates asynchronous document and handwritten text digitization/OCR using Sarvam's document intelligence APIs. |
 | [14_document_data_extraction.ipynb](./14_document_data_extraction.ipynb) | Demonstrates structured data extraction from documents using schema-based document intelligence APIs. |
+| [15_structured_outputs.ipynb](./15_structured_outputs.ipynb) | Converts unstructured text into structured Pydantic objects using OpenAI's `responses.parse()` interface across providers (Sarvam AI, Groq, DeepSeek). |
+| [15b_structured_outputs_langchain.ipynb](./15b_structured_outputs_langchain.ipynb) | Extracts structured outputs from unstructured text and complex reasoning tasks using LangChain and Pydantic schemas. |
+| [16_async_calls.ipynb](./16_async_calls.ipynb) | Compares synchronous vs. asynchronous (`asyncio`) API calls with Sarvam AI and benchmarks latency/performance improvements. |
 
 ---
 
@@ -85,20 +88,23 @@ python code_challenge/solution/app.py
 ## 📂 Repository Structure
 
 ```text
-├── 01_hello_world.ipynb              # Getting started with Sarvam AI API
-├── 02_streaming_api.ipynb            # Streaming API responses
-├── 03_simple_chatbot.ipynb           # Multi-turn conversation history
-├── 04_chatbot_with_tools.ipynb       # Function and tool calling
-├── 05_chatbot_with_streaming.ipynb   # Tool calling with streaming
-├── 06_chat_interface.ipynb          # Gradio web chat UI
-├── 07_openai_interface.ipynb         # Multi-provider OpenAI SDK wrapper
-├── 08_nlp_use_cases.ipynb            # Sentiment analysis & summarization
-├── 09_language_processing.ipynb      # Language detection & Indic translation
-├── 10_comparing_token_usage.ipynb    # Indic token usage comparison across LLMs
-├── 11_text_to_speech.ipynb           # Bulbul TTS synthesis
-├── 12_speech_to_text.ipynb           # Saaras STT transcription
-├── 13_document_digitization.ipynb    # Document OCR & digitization
-├── 14_document_data_extraction.ipynb # Schema-based document data extraction
+├── 01_hello_world.ipynb                      # Getting started with Sarvam AI API
+├── 02_streaming_api.ipynb                    # Streaming API responses
+├── 03_simple_chatbot.ipynb                   # Multi-turn conversation history
+├── 04_simple_chatbot_with_tools.ipynb        # Function and tool calling
+├── 05_chatbot_with_gradio.ipynb              # Gradio web chat UI
+├── 06_chatbot_with_streaming.ipynb           # Tool calling with streaming
+├── 07_openai_interface.ipynb                 # Multi-provider OpenAI SDK wrapper
+├── 08_nlp_use_cases.ipynb                    # Sentiment analysis & summarization
+├── 09_language_processing.ipynb              # Language detection & Indic translation
+├── 10_comparing_token_usage.ipynb            # Indic token usage comparison across LLMs
+├── 11_text_to_speech.ipynb                   # Bulbul TTS synthesis
+├── 12_speech_to_text.ipynb                   # Saaras STT transcription
+├── 13_document_digitization.ipynb            # Document OCR & digitization
+├── 14_document_data_extraction.ipynb         # Schema-based document data extraction
+├── 15_structured_outputs.ipynb               # Structured output parsing with Pydantic
+├── 15b_structured_outputs_langchain.ipynb    # Structured output with LangChain
+├── 16_async_calls.ipynb                      # Sync vs AsyncIO performance benchmark
 ├── code_challenge/
 │   ├── starter/                      # Starter template for hands-on challenge
 │   └── solution/
